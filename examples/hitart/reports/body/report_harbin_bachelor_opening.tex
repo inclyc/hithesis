@@ -43,8 +43,36 @@ ApoA1 还被用于癌症诊断\cite{limwjxtd}、预后预测\cite{apoayuhz}等�
 \subsection{分子动力学计算与 NAMD 软件}
 
 分子动力学在化学、医学方向的应用十分广泛。
+其基本原理是对广义牛顿运动方程的求解。
 
-% TODO:
+分子动力学模拟要求按一定的时间步长对经典运动方程进行不连续的积分,而时间步长受制于分子体系中运动最快的自由度。 在对势加和的方法中,理论上的计算开销复杂度为 $O(n^2)$,即体系中粒子数的平方。
+在实际计算中,对静电相互作用中的短程力部分可采用球形截断策略,而求解Poisson方程时则可采用离散化的处理方案,这样,就可以在倒易空间(reciprocal space)里处理长程相互作用,从而使实际的计算开销减少到$O(n\log n)$。
+
+20世纪80年代末，为了能更高效地处理超大生物体系的计算,人们对串行分子动力学代码相应地进行了并行化,同时致力于开发更适合于硬件前沿技术的全新计算策略。在当时诸多开创性的工作中,值得一提的是Heller等\cite{heller1990molecular}开发的第一个可扩展的分子动力程序EGO。
+EGO是现代并行分子动力学程序的先驱,可在大型集群上并行运行。
+EGO利用多步长积分算法和自适应快速多偶极算法处理长程静电相互作用,从而在40000个原子的范围内能够使复杂度优化到 $O(n)$ （即，与原子数大致成线性关系）。
+
+随着并行化体系结构的发展和计算规模的提升，人们发现仅仅使用 OpenMP 等优化方法编写并行程序是不够用的。人们开始重新编写程序来应对高度并行的超级计算机系统。
+其中，随着空间分配算法\cite{brown1993domain}的提出，一批高度并行化的分子动力学计算软件相继问世，
+例如，NAMD\cite{phillips2005scalable}, AMBER\cite{case2008amber}, GROMACS\cite{abraham2015gromacs}, LAMMPS\cite{thompson2022lammps}等。
+
+表 \ref{tab:md-comparison} 列出了这些软件的优缺点。
+
+\begin{table}[h]
+    \centering
+    \caption{分子动力学软件比较}
+    \label{tab:md-comparison}
+    \begin{tabular}{ccc}
+        \toprule
+        名称      & 优点                       & 缺点        \\
+        \midrule
+        NAMD    & 设计水平高、计算效率高              & 不适合多糖体系模拟 \\
+        AMBER   & 有很好的内置势能模型               & 计算效率不高    \\
+        LAMMPS  & 兼任目前大多数势能模型，效率优（不如 NAMD） & 维护差       \\
+        GROMACS & 算法优秀，计算效率高，维护好           & 势能模型兼容性不好 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 NAMD 是一种开源高性能分子动力学模拟软件，用于模拟原子和分子之间的相互作用以及它们的运动行为。
 NAMD的主要应用领域包括生物医学研究\cite{yao2020molecular}、生物化学\cite{knott2020characterization}、药物设计\cite{han2020computational}、材料科学和纳米技术。
