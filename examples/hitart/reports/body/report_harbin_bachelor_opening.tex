@@ -136,6 +136,10 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
 
 \section{研究方案}
 
+\section{目前已完成的研究工作及结果}
+
+项目已经对 NAMD 软件在 Intel 平台上进行了蛋白质模拟计算，并且在国产 CPU 上完成了 NAMD 的初步移植工作，可以计算出一些小分子物质的极化率、势能、动能等数据。
+
 \subsection{调研蛋白质的性质与规模，收集蛋白质空间数据}
 
 蛋白质的原子数目是影响分子动力学计算负载的关键。
@@ -160,7 +164,6 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
 除了蛋白质的性质规模外，还需研究蛋白质的三维结构数据。
 
 蛋白质数据库（Protein Data Bank，简称PDB）\cite{burley2017protein,sussman1998protein} 是一个专门收录蛋白质及核酸的三维结构资料的数据库。
-图 \ref{fig:protein-db} 展示了蛋白质数据库中蛋白质的一些例子。
 
 可以从蛋白质数据库中下载所需要的蛋白质的原子位置信息，以及初始速度，格式为 PDB 文件。
 另外，还需要蛋白质原子之间的成键信息，这些成键信息在 PSF 中储存。
@@ -181,12 +184,9 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
     \end{tabular}
 \end{table}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.35\textwidth]{images/1024px-Protein_structure_examples.png}
-    \caption{蛋白质数据库（PDB）中蛋白质结构的一些例子。}
-    \label{fig:protein-db}
-\end{figure}
+目前，已经下载到了丙氨酸、ApoA1、STMV 等蛋白质的 PDB 文件和 PSF 文件。他们可以被加载到 VMD 中，观察蛋白质的三维结构。
+
+
 
 \subsection{分子动力学计算}
 
@@ -204,6 +204,84 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
 \begin{equation}
     a_i = \frac{F_i}{m_i} = \frac{\mathrm{d}^2 r}{\mathrm{d} t^2}
 \end{equation}
+
+\subsection{计算结果、含义}
+
+NAMD 的输入、输出均为 PDB 蛋白质数据库文件，用以描述分子每次迭代的位置和速度。
+分子动力学软件基于牛顿力学计算每个原子在力场下的运动情况，迭代若干次按时间计算每个原子的位置和速度，因此输出的计算结果主要是\textit{位置} (.coor) 和\textit{速度} (.vel) 两个文件。
+
+这些输出文件对于研究者来说具有深远的意义。位置文件（.coor）提供了分子中每个原子在空间中的具体坐标，这对于了解分子的结构、构象变化以及相互作用至关重要。另一方面，速度文件（.vel）则展示了每个原子的瞬时运动状态，这对于分析分子的动力学行为、温度效应等方面具有重要价值。
+
+另外，如果需要计算分子的热力学性质，如极化率、内能，自由能，则包含更多计算量。
+
+
+\subsection{各个蛋白质计算结果}
+
+\subsubsection{HIV-1 蛋白酶复合物 (PDB 1a30) 的配体，49原子}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/1A30.png}
+    \caption{HIV-1 蛋白酶复合物 (PDB 1a30) 的配体, VMD}
+    \label{fig:1a30}
+\end{figure}
+
+
+PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的配体（图 \ref{fig:1a30} ），我们在曙光集群上用两个节点迭代62次，计算其极化性（ $ 10^{-3} \cdot C/m^2$ ）。
+
+
+\begin{equation}
+    \alpha = \begin{bmatrix}
+        285.0 & -16.6 & 4.2   \\
+        -16.6 & 245.3 & 20.5  \\
+        4.2   & 20.5  & 271.2 \\
+    \end{bmatrix}
+\end{equation}
+
+
+\subsubsection{丙氨酸 (66原子)}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/alanin.png}
+    \caption{丙氨酸 (66原子)}
+    \label{fig:alanin}
+\end{figure}
+
+\subsubsection{载脂蛋白A1 (92224原子)}
+
+2023 年 11 月，软件成功在神威上模拟了载脂蛋白 A1 的运动情况，如图 \ref{fig:apoa1} 所示。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/ApoA1.png}
+    \caption{载脂蛋白A1 (92224原子)}
+    \label{fig:apoa1}
+\end{figure}
+
+动力学模拟呈现了载脂蛋白 A1在分子水平上的动态特征，为我们提供了深入了解其结构和运动的视角。而在这500步模拟中，图 \ref{fig:apoa1-plot} 展示了动能和势能的变化趋势，从而揭示了蛋白质在模拟过程中的能量分配和转化情况。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/ApoA1.pdf}
+    \caption{载脂蛋白 A1 500步模拟，能量变化趋势（动能、势能）}
+    \label{fig:apoa1-plot}
+\end{figure}
+
+
+\subsubsection{STMV (virus, 1066628 原子)}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/STMV.png}
+    \caption{STMV (virus, 1066628 原子)}
+    \label{fig:stmv}
+\end{figure}
+
+
+
+\section{存在的困难与问题}
+
 
 
 \subsection{优化方案分析}
@@ -232,6 +310,18 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
 
 表 \ref{tab:progress} 展示了本项目的进度安排表。我们将从立项时间 $T_1$ 开始逐步完成每个任务。
 
+\section{后期拟完成的研究工作及进度安排}
+
+在中期报告中，我已成功完成了将NAMD软件移植到专用处理器上的任务，为分子动力学模拟提供了加速的可能性。接下来的研究工作将着重于优化和进一步提升模拟的效率，以满足高性能计算的需求。以下是后期拟完成的研究工作及进度安排：
+
+\begin{enumerate}
+    \item \textbf{性能优化}： 针对专用处理器的特性，对NAMD进行性能优化，包括但不限于利用处理器的并行性、矢量化指令等，以最大程度地发挥硬件加速的潜力。
+    \item \textbf{并行计算}：进一步优化并行计算策略，充分利用专用处理器的多核心架构，实现更高效的计算并提高模拟的整体吞吐量。
+    \item \textbf{性能评估与调优}：对移植后的NAMD进行详细的性能评估，识别潜在的瓶颈和性能瓶颈，并进行进一步的调优工作，以达到最佳的性能表现。
+    \item \textbf{应用案例研究}：在一系列分子动力学模拟案例中验证优化后的NAMD在专用处理器上的性能。通过模拟复杂分子系统，评估加速效果和模拟质量。
+\end{enumerate}
+
+
 \begin{table}[h]
     \centering
     \caption{进度安排表}
@@ -249,16 +339,6 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
     \end{tabular}
 \end{table}
 
-\subsection{预期目标}
-
-中期目标：初步移植与正确性验证
-
-结题目标：优化运行效率，探究载脂蛋白A1的动力学过程，形成论文
-
-\section{课题已具备和所需的条件、经费}
-
-课题组目前已购买需要的计算硬件和必要的指令手册。
-另外，ApoA1 ，STMV 等蛋白质的初始文件已经从蛋白质数据库中获得。
 
 
 \section{主要参考文献}
