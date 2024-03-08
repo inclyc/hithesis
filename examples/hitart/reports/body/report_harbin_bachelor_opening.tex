@@ -7,7 +7,7 @@ ApoA1 在癌症诊断\cite{limwjxtd}、预后预测\cite{apoayuhz}等方面有�
 因此，利用分子动力学方法，模拟 ApoA1 的构象变化、折叠过程，对于生物医学、化学等研究有重要意义。
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{images/PBB_Protein_APOA1_image.jpg}
     \caption{ApoA1 在蛋白质数据库 (PDB) 中的渲染结果}
@@ -19,7 +19,7 @@ ApoA1 在癌症诊断\cite{limwjxtd}、预后预测\cite{apoayuhz}等方面有�
 然而，目前，NAMD在国产CPU上的性能与一些国际竞争对手相比存在一定差距。
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics{images/namd-logo.png}
     \caption{NAMD 标识}
@@ -134,8 +134,6 @@ NAMD 主要用于蛋白质体系的分子动力学计算。
 
 通过这些详尽的性能评估和基准测试，我们将能够全面了解移植后的 NAMD 在自主指令集架构上的性能表现，从而为未来的分子动力学模拟研究和应用提供有力的支持和指导。
 
-\section{研究方案}
-
 \section{目前已完成的研究工作及结果}
 
 项目已经对 NAMD 软件在 Intel 平台上进行了蛋白质模拟计算，并且在国产 CPU 上完成了 NAMD 的初步移植工作，可以计算出一些小分子物质的极化率、势能、动能等数据。
@@ -239,16 +237,8 @@ PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的�
 \end{equation}
 
 
-\subsubsection{丙氨酸 (66原子)}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/alanin.png}
-    \caption{丙氨酸 (66原子)}
-    \label{fig:alanin}
-\end{figure}
-
-\subsubsection{载脂蛋白A1 (92224原子)}
+\subsubsection{载脂蛋白A1动力学模拟}
 
 2023 年 11 月，软件成功在神威上模拟了载脂蛋白 A1 的运动情况，如图 \ref{fig:apoa1} 所示。
 
@@ -271,18 +261,25 @@ PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的�
 \end{figure}
 
 
-\subsubsection{STMV (virus, 1066628 原子)}
+\subsubsection{STMV 动力学模拟}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{images/STMV.png}
     \caption{STMV (virus, 1066628 原子)}
     \label{fig:stmv}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/stmv.pdf}
+    \includegraphics[width=0.9\textwidth]{images/stmv-image.pdf}
+    \caption{卫星烟草花叶病毒 (STMV) 500步模拟，形态学特征}
+    \label{fig:stmv}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/stmv.pdf}
     \caption{卫星烟草花叶病毒 (STMV) 500步模拟，能量变化趋势（动能、势能）}
     \label{fig:stmv-plot}
 \end{figure}
@@ -295,8 +292,6 @@ PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的�
 
 
 
-
-\section{存在的困难与问题}
 
 
 
@@ -313,18 +308,12 @@ PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的�
 因此为了使用 SIMD 需要补充一个维度，这会涉及到一些代价估计计算工作。
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{images/SIMD2.svg.png}
     \caption{SIMD 在体系结构上的设计图示}
     \label{fig:simd}
 \end{figure}
-
-\section{进度安排，预期达到的目标}
-
-\subsection{进度安排}
-
-表 \ref{tab:progress} 展示了本项目的进度安排表。我们将从立项时间 $T_1$ 开始逐步完成每个任务。
 
 \section{后期拟完成的研究工作及进度安排}
 
@@ -337,8 +326,9 @@ PDB 1a30 蛋白质是 HIV-1 （人类免疫缺陷病毒）蛋白酶复合物的�
     \item \textbf{应用案例研究}：在一系列分子动力学模拟案例中验证优化后的NAMD在专用处理器上的性能。通过模拟复杂分子系统，评估加速效果和模拟质量。
 \end{enumerate}
 
+具体进度安排如表 \ref{tab:progress} 所示。
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption{进度安排表}
     \label{tab:progress}
